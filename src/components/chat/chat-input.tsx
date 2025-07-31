@@ -91,13 +91,13 @@ export function ChatInput({
   const canSend = message.trim().length > 0 && !disabled
 
   return (
-    <div className="border-t border-chat-border bg-chat-background/80 backdrop-blur-sm">
-      <div className="max-w-4xl mx-auto p-4">
+    <div className="bg-chat-background">
+      <div className="max-w-4xl mx-auto px-4 pb-6">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
-          className={`relative flex items-end gap-3 p-3 rounded-xl border transition-all duration-200 ${
+          className={`relative flex items-end gap-3 p-3 rounded-xl border transition-all duration-200 mb-4 ${
             isFocused 
               ? "border-accent shadow-lg shadow-focus-ring" 
               : "border-chat-border bg-chat-surface hover:border-chat-border/60"
@@ -159,7 +159,7 @@ export function ChatInput({
         </motion.div>
 
         {/* Helper text */}
-        <div className="mt-2 text-center">
+        <div className="text-center">
           <p className="text-xs text-chat-text-secondary">
             By messaging Legally, you agree to our{" "}
             <a href="#" className="text-accent hover:underline">Terms</a>
