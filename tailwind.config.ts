@@ -19,39 +19,70 @@ export default {
 		},
 		extend: {
 			colors: {
+				/* Base theme colors with semantic tokens */
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
+				
+				/* Primary brand colors with hover states */
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					hover: 'hsl(var(--primary-hover))'
 				},
+				
+				/* Secondary colors with hover states */
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
+					foreground: 'hsl(var(--secondary-foreground))',
+					hover: 'hsl(var(--secondary-hover))'
 				},
+				
+				/* Destructive colors */
 				destructive: {
 					DEFAULT: 'hsl(var(--destructive))',
 					foreground: 'hsl(var(--destructive-foreground))'
 				},
+				
+				/* Muted colors for subtle elements */
 				muted: {
 					DEFAULT: 'hsl(var(--muted))',
 					foreground: 'hsl(var(--muted-foreground))'
 				},
+				
+				/* Accent colors with hover states */
 				accent: {
 					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+					foreground: 'hsl(var(--accent-foreground))',
+					hover: 'hsl(var(--accent-hover))'
 				},
+				
+				/* Popover and overlay colors */
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
 					foreground: 'hsl(var(--popover-foreground))'
 				},
+				
+				/* Card and surface colors */
 				card: {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				
+				/* Chat-specific semantic colors */
+				'chat-background': 'hsl(var(--chat-background))',
+				'chat-surface': 'hsl(var(--chat-surface))',
+				'chat-border': 'hsl(var(--chat-border))',
+				'chat-text-primary': 'hsl(var(--chat-text-primary))',
+				'chat-text-secondary': 'hsl(var(--chat-text-secondary))',
+				
+				/* Interaction colors */
+				'hover-overlay': 'hsl(var(--hover-overlay))',
+				'focus-ring': 'hsl(var(--focus-ring))',
+				
+				/* Sidebar colors */
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

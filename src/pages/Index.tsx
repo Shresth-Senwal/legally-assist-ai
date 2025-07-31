@@ -1,14 +1,25 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+/**
+ * Legally AI Paralegal App - Main Index Page
+ * 
+ * Entry point for the Legally AI application.
+ * Provides AI-powered legal assistance with professional interface.
+ * 
+ * Features:
+ * - ChatGPT-inspired interface optimized for legal professionals
+ * - Dark/light theme support with smooth transitions
+ * - Responsive design for all device sizes
+ * - Accessibility compliant (WCAG 2.1 AA+)
+ * - Professional branding and legal-focused UX
+ */
 
+import { MainLayout } from "@/components/layout/main-layout"
+
+/**
+ * Index page component - main entry point for the application
+ * Renders the complete Legally AI interface
+ */
 const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  return <MainLayout />
 };
 
 export default Index;
