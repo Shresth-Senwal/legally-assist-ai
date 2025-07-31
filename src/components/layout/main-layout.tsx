@@ -18,6 +18,7 @@ import { ChatHeader } from "./chat-header"
 import { ChatWelcome } from "@/components/chat/chat-welcome"
 import { ArchivedChatsModal } from "@/components/modals/archived-chats-modal"
 import { SettingsModal } from "@/components/modals/settings-modal"
+import { ChatInput } from "@/components/chat/chat-input"
 import { useTheme } from "@/components/theme/theme-provider"
 
 /**
@@ -77,6 +78,22 @@ export function MainLayout() {
   }
 
   /**
+   * Handle chat input message sending
+   */
+  const handleSendMessage = (message: string) => {
+    console.log(`Message sent: ${message}`)
+    // TODO: Implement actual message sending to AI backend
+  }
+
+  /**
+   * Handle file attachment
+   */
+  const handleAttachFile = () => {
+    console.log("File attachment requested")
+    // TODO: Implement file attachment functionality
+  }
+  
+  /**
    * Handle user logout
    */
   const handleLogout = () => {
@@ -115,22 +132,21 @@ export function MainLayout() {
         />
 
         {/* Main Content */}
-        <main className="flex-1 overflow-hidden">
-          <ChatWelcome 
-            onPromptSelect={handlePromptSelect}
-            onActionClick={handleActionClick}
-          />
+        <main className="flex-1 overflow-hidden flex flex-col">
+          <div className="flex-1 overflow-y-auto">
+            <ChatWelcome 
+              onPromptSelect={handlePromptSelect}
+              onActionClick={handleActionClick}
+            />
+          </div>
         </main>
 
-        {/* Footer - Legal disclaimer */}
-        <footer className="text-center p-4 text-sm text-chat-text-secondary border-t border-chat-border bg-chat-background/80 backdrop-blur-sm">
-          <p>
-            By messaging Legally, you agree to our{" "}
-            <a href="#" className="text-accent hover:underline">Terms</a>
-            {" "}and have read our{" "}
-            <a href="#" className="text-accent hover:underline">Privacy Policy</a>.
-          </p>
-        </footer>
+        {/* Persistent Chat Input */}
+        <ChatInput
+          onSendMessage={handleSendMessage}
+          onAttachFile={handleAttachFile}
+          placeholder="Ask anything"
+        />
       </motion.div>
 
       {/* Modals */}

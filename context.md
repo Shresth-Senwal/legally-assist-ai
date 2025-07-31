@@ -20,7 +20,7 @@ src/
 ├── components/
 │   ├── theme/           # Theme management components
 │   ├── layout/          # Layout and navigation components  
-│   ├── chat/            # Chat interface components
+│   ├── chat/            # Chat interface components (welcome, input)
 │   ├── modals/          # Modal dialogs (settings, archived chats)
 │   └── ui/              # shadcn/ui base components
 ├── pages/               # Route components
@@ -36,6 +36,8 @@ src/
 - ✅ Professional header with Legally branding and theme toggle
 - ✅ Action buttons (Attach, Search, Reason) with legal focus
 - ✅ Legal-focused suggestion prompts for paralegal tasks
+- ✅ Persistent text input box always visible at bottom
+- ✅ Auto-expanding textarea with send functionality
 - ✅ Responsive design for mobile and desktop
 
 ### Theme System
