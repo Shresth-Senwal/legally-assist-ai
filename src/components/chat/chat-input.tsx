@@ -7,10 +7,15 @@
  * Features:
  * - Auto-expanding textarea with multi-line support
  * - Send button with keyboard shortcuts (Enter to send, Shift+Enter for new line)
- * - Attachment button for file uploads
+ * - Attachment button for file uploads (configurable)
+ * - Two variants: "persistent" (bottom of screen) and "welcome" (inline with welcome screen)
  * - Responsive design with proper spacing
  * - Smooth animations and focus states
  * - Character limit and input validation
+ * 
+ * Layout Variants:
+ * - "persistent": Full-width bottom container with background and helper text
+ * - "welcome": Inline input box without background container, integrated into welcome flow
  */
 
 import { useState, useRef, useEffect } from "react"
@@ -25,18 +30,23 @@ interface ChatInputProps {
   placeholder?: string
   disabled?: boolean
   maxLength?: number
+  variant?: 'persistent' | 'welcome'
+  showAttachButton?: boolean
 }
 
 /**
  * ChatInput provides the main message input interface
  * Handles message composition and sending with ChatGPT-style UX
+ * Supports multiple variants for different layout contexts
  */
 export function ChatInput({ 
   onSendMessage, 
   onAttachFile,
   placeholder = "Ask anything",
   disabled = false,
-  maxLength = 4000
+  maxLength = 4000,
+  variant = 'persistent',
+  showAttachButton = true
 }: ChatInputProps) {
   const [message, setMessage] = useState("")
   const [isFocused, setIsFocused] = useState(false)
@@ -90,6 +100,79 @@ export function ChatInput({
 
   const canSend = message.trim().length > 0 && !disabled
 
+  // Welcome variant renders just the input box without container
+  if (variant === 'welcome') {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className={`relative flex items-end gap-3 p-3 rounded-xl border transition-all duration-200 ${
+          isFocused 
+            ? "border-accent shadow-lg shadow-focus-ring" 
+            : "border-chat-border bg-chat-surface hover:border-chat-border/60"
+        }`}
+      >
+        {/* Conditional attach button for welcome variant */}
+        {showAttachButton && (
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={onAttachFile}
+            disabled={disabled}
+            className="h-8 w-8 rounded-lg hover:bg-hover-overlay transition-colors flex-shrink-0"
+            aria-label="Attach file"
+          >
+            <Paperclip className="h-4 w-4" />
+          </Button>
+        )}
+
+        {/* Text input area */}
+        <div className="flex-1 relative">
+          <Textarea
+            ref={textareaRef}
+            value={message}
+            onChange={handleInputChange}
+            onKeyDown={handleKeyDown}
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
+            placeholder={placeholder}
+            disabled={disabled}
+            rows={1}
+            className="min-h-[44px] max-h-[200px] resize-none border-0 bg-transparent p-0 pr-12 text-chat-text-primary placeholder:text-chat-text-secondary focus:ring-0 focus:outline-none"
+            style={{ 
+              boxShadow: "none",
+              outline: "none"
+            }}
+          />
+          
+          {/* Character count indicator */}
+          {message.length > maxLength * 0.8 && (
+            <div className="absolute bottom-1 right-14 text-xs text-chat-text-secondary">
+              {message.length}/{maxLength}
+            </div>
+          )}
+        </div>
+
+        {/* Send button */}
+        <Button
+          onClick={handleSend}
+          disabled={!canSend}
+          size="sm"
+          className={`h-8 w-8 rounded-lg transition-all duration-200 flex-shrink-0 ${
+            canSend
+              ? "bg-accent hover:bg-accent-hover text-accent-foreground shadow-sm"
+              : "bg-muted text-muted-foreground cursor-not-allowed"
+          }`}
+          aria-label="Send message"
+        >
+          <ArrowUp className="h-4 w-4" />
+        </Button>
+      </motion.div>
+    )
+  }
+
+  // Persistent variant renders with full container and helper text
   return (
     <div className="bg-chat-background">
       <div className="max-w-4xl mx-auto px-4 pb-6">

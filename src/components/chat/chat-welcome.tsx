@@ -7,18 +7,29 @@
  * Features:
  * - Centered layout with large welcome text
  * - Action buttons for attach, search, and reason
+ * - Integrated chat input box positioned between actions and suggestions
  * - Predefined legal assistant prompts
  * - Smooth animations and hover effects
  * - Responsive design for all screen sizes
+ * 
+ * Layout Order:
+ * 1. Main heading ("What can I help with?")
+ * 2. Action buttons (Attach, Search, Reason)
+ * 3. Chat input box with send functionality
+ * 4. "Surprise me" suggestion prompts
  */
 
 import { motion } from "framer-motion"
 import { Paperclip, Search, Scale, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { ChatInput } from "./chat-input"
 
 interface ChatWelcomeProps {
   onPromptSelect?: (prompt: string) => void
   onActionClick?: (action: 'attach' | 'search' | 'reason') => void
+  onSendMessage?: (message: string) => void
+  onAttachFile?: () => void
+  onStartConversation?: (message: string) => void
 }
 
 // Predefined legal assistant suggestions
@@ -56,19 +67,43 @@ const itemVariants = {
 
 /**
  * ChatWelcome provides the main welcome interface
- * Displays when no conversation is active
+ * Displays when no conversation is active with integrated input for new conversations
  */
-export function ChatWelcome({ onPromptSelect, onActionClick }: ChatWelcomeProps) {
+export function ChatWelcome({ 
+  onPromptSelect, 
+  onActionClick, 
+  onSendMessage, 
+  onAttachFile,
+  onStartConversation
+}: ChatWelcomeProps) {
+  
+  /**
+   * Handle message sending from the welcome screen
+   * Triggers conversation start
+   */
+  const handleMessageSend = (message: string) => {
+    onSendMessage?.(message)
+    onStartConversation?.(message)
+  }
+
+  /**
+   * Handle suggestion prompt selection
+   * Triggers conversation start with the selected prompt
+   */
+  const handlePromptSelect = (prompt: string) => {
+    onPromptSelect?.(prompt)
+    onStartConversation?.(prompt)
+  }
   return (
-    <div className="flex-1 flex flex-col items-center justify-center p-6 max-w-3xl mx-auto">
+    <div className="flex-1 flex flex-col items-center justify-center p-6 pt-20 pb-12 max-w-3xl mx-auto">
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="text-center space-y-8 w-full"
+        className="text-center space-y-10 w-full"
       >
         {/* Main welcome heading */}
-        <motion.div variants={itemVariants} className="space-y-4">
+        <motion.div variants={itemVariants} className="space-y-6">
           <h1 className="text-3xl lg:text-4xl font-medium text-chat-text-primary">
             What can I help with?
           </h1>
@@ -110,17 +145,31 @@ export function ChatWelcome({ onPromptSelect, onActionClick }: ChatWelcomeProps)
           </Button>
         </motion.div>
 
+        {/* Integrated Chat Input - positioned between actions and suggestions */}
+        <motion.div 
+          variants={itemVariants}
+          className="w-full max-w-2xl mx-auto"
+        >
+          <ChatInput
+            onSendMessage={handleMessageSend}
+            onAttachFile={onAttachFile}
+            placeholder="Ask anything"
+            variant="welcome"
+            showAttachButton={false}
+          />
+        </motion.div>
+
         {/* Suggestion prompts */}
         <motion.div 
           variants={itemVariants}
-          className="space-y-3 w-full max-w-2xl mx-auto"
+          className="space-y-4 w-full max-w-2xl mx-auto"
         >
           {suggestionPrompts.map((prompt, index) => (
             <motion.button
               key={prompt}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => onPromptSelect?.(prompt)}
+              onClick={() => handlePromptSelect(prompt)}
               className="w-full p-4 text-left rounded-xl border border-chat-border bg-chat-surface hover:bg-hover-overlay transition-all duration-200 group"
             >
               <div className="flex items-center gap-3">
@@ -128,7 +177,7 @@ export function ChatWelcome({ onPromptSelect, onActionClick }: ChatWelcomeProps)
                   <Sparkles className="h-4 w-4 text-chat-text-secondary group-hover:text-accent transition-colors" />
                 </div>
                 <span className="text-chat-text-secondary group-hover:text-chat-text-primary transition-colors">
-                  Surprise me <span className="text-chat-text-primary font-medium">{prompt}</span>
+                  Help me <span className="text-chat-text-primary font-medium">{prompt}</span>
                 </span>
               </div>
             </motion.button>

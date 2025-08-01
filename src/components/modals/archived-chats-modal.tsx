@@ -21,7 +21,7 @@ interface ArchivedChat {
   id: string
   name: string
   dateCreated: string
-  status: 'archived' | 'unarchived'
+  status: 'archived' | 'active'
 }
 
 interface ArchivedChatsModalProps {
@@ -32,19 +32,7 @@ interface ArchivedChatsModalProps {
   onDelete?: (chatId: string) => void
 }
 
-// Mock archived chats data - in real app, this would come from props or API
-const defaultChats: ArchivedChat[] = [
-  { id: '1', name: 'Contract Review Analysis', dateCreated: 'Just now', status: 'archived' },
-  { id: '2', name: 'Employment Law Questions', dateCreated: 'A minute ago', status: 'archived' },
-  { id: '3', name: 'IP Rights Discussion', dateCreated: '1 hour ago', status: 'archived' },
-  { id: '4', name: 'Compliance Strategy', dateCreated: 'Yesterday', status: 'archived' },
-  { id: '5', name: 'Corporate Legal Structure', dateCreated: 'Feb 2, 2025', status: 'archived' },
-  { id: '6', name: 'Regulatory Framework Review', dateCreated: 'Just now', status: 'archived' },
-  { id: '7', name: 'Legal Document Templates', dateCreated: 'A minute ago', status: 'archived' },
-  { id: '8', name: 'Client Rights Overview', dateCreated: '1 hour ago', status: 'archived' },
-  { id: '9', name: 'Case Law Research', dateCreated: 'Yesterday', status: 'archived' },
-  { id: '10', name: 'Privacy Policy Draft', dateCreated: 'Feb 2, 2025', status: 'archived' }
-]
+// Chats now come from props; no default/mock data here
 
 /**
  * ArchivedChatsModal provides interface for managing archived conversations
@@ -52,19 +40,16 @@ const defaultChats: ArchivedChat[] = [
 export function ArchivedChatsModal({ 
   isOpen, 
   onClose, 
-  chats = defaultChats,
+  chats = [],
   onUnarchive,
   onDelete 
 }: ArchivedChatsModalProps) {
   
   const handleUnarchive = (chatId: string) => {
     onUnarchive?.(chatId)
-    // In real app, this would update the chat status
   }
-
   const handleDelete = (chatId: string) => {
     onDelete?.(chatId)
-    // In real app, this would permanently delete the chat
   }
 
   return (
@@ -83,14 +68,6 @@ export function ArchivedChatsModal({
               <DialogTitle className="text-xl font-semibold text-chat-text-primary">
                 Archived Chats
               </DialogTitle>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onClose}
-                className="h-8 w-8 rounded-lg hover:bg-hover-overlay"
-              >
-                <X className="h-4 w-4" />
-              </Button>
             </div>
           </DialogHeader>
 
@@ -131,17 +108,27 @@ export function ArchivedChatsModal({
                     {/* Status */}
                     <div className="flex items-center">
                       <span className="text-sm text-chat-text-secondary">
-                        {chat.status === 'archived' ? 'Unarchived' : 'Archived'}
+                        {chat.status === 'archived' ? 'Archived' : 'Active'}
                       </span>
                     </div>
 
                     {/* Actions */}
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleUnarchive(chat.id)}
+                        className="h-8 w-8 rounded-lg"
+                        aria-label="Unarchive chat"
+                      >
+                        Unarchive
+                      </Button>
                       <Button
                         variant="ghost"
                         size="sm"
                         onClick={() => handleDelete(chat.id)}
-                        className="h-8 w-8 rounded-lg hover:bg-destructive hover:text-destructive-foreground opacity-0 group-hover:opacity-100 transition-all"
+                        className="h-8 w-8 rounded-lg hover:bg-destructive hover:text-destructive-foreground"
+                        aria-label="Delete chat"
                       >
                         <MoreHorizontal className="h-4 w-4" />
                       </Button>

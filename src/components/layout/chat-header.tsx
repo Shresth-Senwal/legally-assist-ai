@@ -12,20 +12,27 @@
  */
 
 import { motion } from "framer-motion"
-import { Menu, MoreHorizontal } from "lucide-react"
+import { Menu, MoreHorizontal, Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme/theme-toggle"
 
 interface ChatHeaderProps {
   onMenuClick?: () => void
   onMoreClick?: () => void
+  onNewConversation?: () => void
+  showNewConversation?: boolean
 }
 
 /**
  * ChatHeader provides the main application header
  * Includes brand name, navigation controls, and theme switching
  */
-export function ChatHeader({ onMenuClick, onMoreClick }: ChatHeaderProps) {
+export function ChatHeader({ 
+  onMenuClick, 
+  onMoreClick, 
+  onNewConversation, 
+  showNewConversation 
+}: ChatHeaderProps) {
   return (
     <motion.header 
       initial={{ opacity: 0, y: -10 }}
@@ -56,6 +63,25 @@ export function ChatHeader({ onMenuClick, onMoreClick }: ChatHeaderProps) {
           </h1>
         </motion.div>
       </div>
+
+      {/* Center - New conversation button (when in conversation) */}
+      {showNewConversation && (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.2 }}
+        >
+          <Button
+            onClick={onNewConversation}
+            variant="outline"
+            size="sm"
+            className="gap-2 hover:bg-hover-overlay transition-colors duration-200"
+          >
+            <Plus className="h-3 w-3" />
+            New Chat
+          </Button>
+        </motion.div>
+      )}
 
       {/* Right side - Theme toggle and more options */}
       <div className="flex items-center gap-2">
